@@ -1,9 +1,10 @@
 class Api::V0::MarketsController < ApplicationController
   def index
-    render json: Market.all
+    markets = Market.all
+    render json: MarketSerializer.format_markets(markets)
   end
 
   def show
-    
+    render json: Market.find(params[:id])
   end
 end
