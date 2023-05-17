@@ -181,14 +181,27 @@
         "lines": [
           1,
           1,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          null,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/spec/factories/vendors.rb": {
+        "lines": [
+          1,
+          1,
+          22,
+          22,
+          22,
+          22,
+          22,
           null,
           null
         ]
@@ -199,6 +212,8 @@
           1,
           1,
           1,
+          1,
+          null,
           null,
           null,
           null
@@ -207,15 +222,8 @@
       "/Users/bostonlowrey/turing/3mod/projects/market_money/app/models/market.rb": {
         "lines": [
           1,
-          15,
           1,
           1,
-          null,
-          1,
-          null,
-          1,
-          14,
-          null,
           null
         ]
       },
@@ -223,38 +231,6 @@
         "lines": [
           1,
           1,
-          null
-        ]
-      },
-      "/Users/bostonlowrey/turing/3mod/projects/market_money/spec/models/market_vendor_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          null,
-          null
-        ]
-      },
-      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/models/market_vendor.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/bostonlowrey/turing/3mod/projects/market_money/spec/models/vendor_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          null,
           null
         ]
       },
@@ -266,87 +242,11 @@
           null
         ]
       },
-      "/Users/bostonlowrey/turing/3mod/projects/market_money/spec/requests/api/v0/markets_request_spec.rb": {
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/models/market_vendor.rb": {
         "lines": [
           1,
-          null,
           1,
           1,
-          1,
-          2,
-          null,
-          2,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          2,
-          2,
-          null,
-          2,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          1,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
           null
         ]
       },
@@ -378,10 +278,36 @@
           1,
           1,
           1,
+          null,
+          1,
+          16,
+          null,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/controllers/api/v0/vendors_controller.rb": {
+        "lines": [
+          1,
+          1,
+          2,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/serializers/vendor_serializer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
           null
         ]
       }
     },
-    "timestamp": 1684294543
+    "timestamp": 1684342840
   }
 }
