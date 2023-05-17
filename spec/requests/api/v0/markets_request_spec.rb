@@ -15,7 +15,7 @@ RSpec.describe 'Markets API' do
 
     it 'returns all markets' do
       markets = JSON.parse(response.body, symbolize_names: true)[:data]
- require 'pry'; binding.pry
+
       markets.each do |market|
         expect(market[:id]).to be_a(String)
         expect(market[:attributes][:name]).to be_a(String)
