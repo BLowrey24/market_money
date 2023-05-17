@@ -44,4 +44,45 @@ RSpec.describe 'Vendors requests' do
       expect(error[:detail]).to eq("Could not find Vendor with id of 10.")
     end
   end
+
+  describe 'create a vendor' do
+    it 'can create a new vendor' do
+      vendor_attributes = {
+        name: 'Bostons',
+        description: 'Good place for good food',
+        contact_name: 'Boston Lowrey',
+        contact_phone: '1231231250',
+        credit_accepted: false
+      }
+
+      post '/api/v0/vendors', params: { vendor: vendor_attributes }
+
+      expect(response).to be_successful
+      expect(response.status).to eq(201)
+
+      body = JSON.parse(response.body, symbolize_names: true)[:data]
+      vendor = body[:attributes]
+
+      expect(body).to have_key(:id)
+      expect(body[:id]).to be_a(String)
+
+      expect(body).to have_key(:type)
+      expect(body[:type]).to eq('vendor')
+
+      expect(vendor).to have_key(:name)
+      expect(vendor[:name]).to eq(vendor_params[:name])
+
+      expect(vendor).to have_key(:description)
+      expect(vendor[:description]).to eq(vendor_params[:description])
+
+      expect(vendor).to have_key(:contact_name)
+      expect(vendor[:contact_name]).to eq(vendor_params[:contact_name])
+
+      expect(vendor).to have_key(:contact_phone)
+      expect(vendor[:contact_phone]).to eq(vendor_params[:contact_phone])
+
+      expect(vendor).to have_key(:credit_accepted)
+      expect(vendor[:credit_accepted]).to eq(vendor_params[:credit_accepted])
+    end
+  end
 end
