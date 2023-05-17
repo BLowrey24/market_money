@@ -31,5 +31,17 @@ RSpec.describe 'Vendors requests' do
       expect(attributes).to have_key(:contact_phone)
       expect(attributes).to have_key(:credit_accepted)
     end
+
+    it 'returns an error if vendor does not exist' do
+      get "/api/v0/vendors/10"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      error = body[:errors].first
+
+      expect(error[:detail]).to eq("Could not find Vendor with id of 10.")
+    end
   end
 end
