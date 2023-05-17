@@ -9,42 +9,24 @@ RSpec.describe 'Markets API' do
     end
 
     it 'this endpoint is successful' do
+      expect(request.url).to eq("http://www.example.com/api/v0/markets")
       expect(response).to be_successful
     end
 
-    it 'the response gets parsed and turned into a ruby object and looks cleaner' do
-      markets = JSON.parse(response.body, symbolize_names: true)
-# require 'pry'; binding.pry
+    it 'returns all markets' do
+      markets = JSON.parse(response.body, symbolize_names: true)[:data]
+ require 'pry'; binding.pry
       markets.each do |market|
-        expect(market).to have_key(:id)
-        expect(market[:id]).to be_an(Integer)
-  
-        expect(market).to have_key(:name)
-        expect(market[:name]).to be_a(String)
-  
-        expect(market).to have_key(:street)
-        expect(market[:street]).to be_a(String)
-  
-        expect(market).to have_key(:city)
-        expect(market[:city]).to be_a(String)
-  
-        expect(market).to have_key(:county)
-        expect(market[:county]).to be_a(String)
-
-        expect(market).to have_key(:state)
-        expect(market[:state]).to be_a(String)
-
-        expect(market).to have_key(:zip)
-        expect(market[:zip]).to be_a(String)
-
-        expect(market).to have_key(:lat)
-        expect(market[:lat]).to be_a(String)
-
-        expect(market).to have_key(:lon)
-        expect(market[:lon]).to be_a(String)
-        
-        expect(market).to have_key(:vendor_count)
-        expect(market[:vendor_count]).to be_a(Integer)
+        expect(market[:id]).to be_a(String)
+        expect(market[:attributes][:name]).to be_a(String)
+        expect(market[:attributes][:street]).to be_a(String)
+        expect(market[:attributes][:city]).to be_a(String)
+        expect(market[:attributes][:county]).to be_a(String)
+        expect(market[:attributes][:state]).to be_a(String)
+        expect(market[:attributes][:zip]).to be_a(String)
+        expect(market[:attributes][:lat]).to be_a(String)
+        expect(market[:attributes][:lon]).to be_a(String)
+        expect(market[:attributes][:vendor_count]).to be_a(Integer)
       end
     end
   end
@@ -63,28 +45,36 @@ RSpec.describe 'Markets API' do
       expect(response).to be_successful
     end
 
-    it 'can get a market by an id' do
+    it 'returns a single market based on the id in the endpoint' do
       market = JSON.parse(response.body, symbolize_names: true)
 
-      expect(market[:id]).to eq(@market_1.id)
+      expect(market[:data][:id]).to eq("#{@market_1.id}")
+      expect(market[:data][:attributes][:name]).to eq("Mann, Gerlach and Gislason")
+      expect(market[:data][:attributes][:street]).to eq("6230 Wiza Mill")
+      expect(market[:data][:attributes][:city]).to eq("Howebury")
+      expect(market[:data][:attributes][:county]).to eq("Willow Pointe")
+      expect(market[:data][:attributes][:state]).to eq("WV")
+      expect(market[:data][:attributes][:zip]).to eq("25470")
+      expect(market[:data][:attributes][:lat]).to eq("-84.30181491586268")
+      expect(market[:data][:attributes][:lon]).to eq("-7.17545639902275")
+      expect(market[:data][:attributes][:vendor_count]).to eq(0)
+    end
+  end
 
-      expect(market[:name]).to eq("Mann, Gerlach and Gislason")
+  describe 'sad path' do
+    it 'returns a error message' do
 
-      expect(market[:street]).to eq("6230 Wiza Mill")
+      get "/api/v0/markets/12345678910"
 
-      expect(market[:city]).to eq("Howebury")
+      body = JSON.parse(response.body, symbolize_names: true)
+      error_detail = body[:errors].first[:detail]
 
-      expect(market[:county]).to eq("Willow Pointe")
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
 
-      expect(market[:state]).to eq("WV")
+      expect(body).to have_key(:errors)
 
-      expect(market[:zip]).to eq("25470")
-
-      expect(market[:lat]).to eq("-84.30181491586268")
-
-      expect(market[:lon]).to eq("-7.17545639902275")
-
-      expect(market[:vendor_count]).to eq(0)
+      expect(error_detail).to eq("Couldn't find market with 'id'=12345678910.")
     end
   end
 end

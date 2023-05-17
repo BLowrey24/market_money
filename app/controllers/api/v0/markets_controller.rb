@@ -1,10 +1,13 @@
 class Api::V0::MarketsController < ApplicationController
   def index
-    markets = Market.all
-    render json: MarketSerializer.format_markets(markets)
+    render json: MarketSerializer.new( Market.all)
   end
 
   def show
-    render json: Market.find(params[:id])
+    if Market.exists?(params[:id])
+      render json: MarketSerializer.new(Market.find(params[:id]))
+    else
+      render json: { errors: [{ detail: "Couldn't find market with 'id'=#{params[:id]}."}] }, status: 404
+    end
   end
 end
