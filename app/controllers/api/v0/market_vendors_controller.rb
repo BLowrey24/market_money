@@ -14,4 +14,8 @@ class Api::V0::MarketVendorsController < ApplicationController
       render json: { errors: [{ detail: "Could not find Market or Vendor with the specified ID." }] }, status: :not_found
     end
   end
+
+  def destroy
+    
+  end
 end
