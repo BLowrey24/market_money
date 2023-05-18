@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Markets API' do
+RSpec.describe 'Markets requests' do
   describe 'api/v0/markets' do
     before do
       create_list(:market, 5)
