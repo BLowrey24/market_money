@@ -4,7 +4,7 @@ class Api::V0::VendorsController < ApplicationController
       @market = Market.find(params[:market_id])
       render json: VendorSerializer.new(@market.vendors)
     else
-      render json: { errors: [{ detail: "Could not find Market with id of #{params[:market_id]}."}] }, status: 404
+      render json: { errors: [{ detail: "Could not find Market with id of #{params[:market_id]}."}] }, status: :not_found
     end
   end
 
@@ -12,16 +12,16 @@ class Api::V0::VendorsController < ApplicationController
     if Vendor.exists?(params[:id])
       render json: VendorSerializer.new(Vendor.find(params[:id]))
     else
-      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: 404
+      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: :not_found
     end
   end
 
   def create
     vendor = Vendor.new(vendor_params)
     if vendor.save
-      render json: VendorSerializer.new(vendor), status: 201
+      render json: VendorSerializer.new(vendor), status: :created
     else
-      render json: { errors: vendor.errors }, status: 400
+      render json: { errors: vendor.errors }, status: :bad_request
     end
   end
 
@@ -29,12 +29,12 @@ class Api::V0::VendorsController < ApplicationController
     if Vendor.exists?(params[:id])
       vendor = Vendor.find(params[:id])
       if vendor.update(vendor_params)
-        render json: VendorSerializer.new(vendor), status: 200
+        render json: VendorSerializer.new(vendor), status: :ok
       else
-        render json: { errors: [{detail: "Fill in all fields"}] }, status: 400
+        render json: { errors: [{detail: "Fill in all fields"}] }, status: :bad_request
       end
     else
-      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: 404
+      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: :not_found
     end
   end
 
@@ -42,7 +42,7 @@ class Api::V0::VendorsController < ApplicationController
     if Vendor.exists?(params[:id])
       Vendor.destroy(params[:id])
     else
-      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: 404
+      render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: :not_found
     end
   end
 
