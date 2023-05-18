@@ -54,7 +54,7 @@ RSpec.describe 'Vendors requests' do
         contact_phone: '1231231250',
         credit_accepted: false
       }
-
+  
       post '/api/v0/vendors', params: { vendor: vendor_attributes }
 
       expect(response).to be_successful
@@ -70,19 +70,35 @@ RSpec.describe 'Vendors requests' do
       expect(body[:type]).to eq('vendor')
 
       expect(vendor).to have_key(:name)
-      expect(vendor[:name]).to eq(vendor_params[:name])
+      expect(vendor[:name]).to eq(vendor_attributes[:name])
 
       expect(vendor).to have_key(:description)
-      expect(vendor[:description]).to eq(vendor_params[:description])
+      expect(vendor[:description]).to eq(vendor_attributes[:description])
 
       expect(vendor).to have_key(:contact_name)
-      expect(vendor[:contact_name]).to eq(vendor_params[:contact_name])
+      expect(vendor[:contact_name]).to eq(vendor_attributes[:contact_name])
 
       expect(vendor).to have_key(:contact_phone)
-      expect(vendor[:contact_phone]).to eq(vendor_params[:contact_phone])
+      expect(vendor[:contact_phone]).to eq(vendor_attributes[:contact_phone])
 
       expect(vendor).to have_key(:credit_accepted)
-      expect(vendor[:credit_accepted]).to eq(vendor_params[:credit_accepted])
+      expect(vendor[:credit_accepted]).to eq(vendor_attributes[:credit_accepted])
+    end
+
+    it 'returns an error if name is missing' do
+       vendor_attributes = {
+        name: '',
+        description: 'Good place for good food',
+        contact_name: 'Boston Lowrey',
+        contact_phone: '1231231250',
+        credit_accepted: false
+      }
+
+      post '/api/v0/vendors', params: { vendor: vendor_attributes }
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      body = JSON.parse(response.body, symbolize_names: true)
     end
   end
 end

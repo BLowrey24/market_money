@@ -15,4 +15,20 @@ class Api::V0::VendorsController < ApplicationController
       render json: { errors: [{ detail: "Could not find Vendor with id of #{params[:id]}."}] }, status: 404
     end
   end
+
+  def create
+    vendor = Vendor.new(vendor_params)
+
+    if vendor.save
+      render json: VendorSerializer.new(vendor), status: 201
+    else
+      render json: { errors: vendor.errors }, status: 400
+    end
+  end
+
+  private
+
+  def vendor_params
+    params.require(:vendor).permit(:name, :description, :contact_name, :contact_phone, :credit_accepted)
+  end
 end
