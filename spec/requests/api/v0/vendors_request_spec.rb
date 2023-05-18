@@ -102,6 +102,55 @@ RSpec.describe 'Vendors requests' do
     end
   end
 
+  describe 'patch /api/v0/vendors/#{vendor.id}' do
+    it 'can update a vendor' do
+      vendor = create(:vendor)
+      vendor_attributes = {
+        name: 'Bostons',
+        description: 'Good place for good food',
+        contact_name: 'Boston Lowrey',
+        contact_phone: '1231231250',
+        credit_accepted: false
+      }
+
+      patch "/api/v0/vendors/#{vendor.id}", params: { vendor: vendor_attributes }
+
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+      expect(Vendor.last.name).to eq(vendor_attributes[:name])
+      expect(Vendor.last.description).to eq(vendor_attributes[:description])
+      expect(Vendor.last.contact_name).to eq(vendor_attributes[:contact_name])
+      expect(Vendor.last.contact_phone).to eq(vendor_attributes[:contact_phone])
+      expect(Vendor.last.credit_accepted).to eq(vendor_attributes[:credit_accepted])
+    end
+  
+    it 'returns an error if vendor does not exist' do
+      patch "/api/v0/vendors/0"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns an error if an attribute is missing' do
+      vendor = create(:vendor)
+      vendor_attributes = {
+        name: 'Bostons',
+        description: 'Good place for good food',
+        contact_name: '',
+        contact_phone: '1231231250',
+        credit_accepted: false
+      }
+
+      patch "/api/v0/vendors/#{vendor.id}", params: { vendor: vendor_attributes }
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(body).to have_key(:errors)
+      expect(body[:errors].first[:detail]).to eq("Fill in all fields")
+    end
+  end
+
   describe 'delete /api/v0/vendors/#{vendor_id}' do
     it 'deletes a vendor' do
       vendor = create(:vendor)
