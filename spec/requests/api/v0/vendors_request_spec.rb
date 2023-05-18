@@ -85,7 +85,7 @@ RSpec.describe 'Vendors requests' do
       expect(vendor[:credit_accepted]).to eq(vendor_attributes[:credit_accepted])
     end
 
-    it 'returns an error if name is missing' do
+    it 'returns an error if attribute is missing' do
        vendor_attributes = {
         name: '',
         description: 'Good place for good food',
@@ -99,6 +99,26 @@ RSpec.describe 'Vendors requests' do
       expect(response).to_not be_successful
       expect(response.status).to eq(400)
       body = JSON.parse(response.body, symbolize_names: true)
+    end
+  end
+
+  describe 'delete /api/v0/vendors/#{vendor_id}' do
+    it 'deletes a vendor' do
+      vendor = create(:vendor)
+
+      delete "/api/v0/vendors/#{vendor.id}"
+
+      expect(response).to be_successful
+      expect(response.status).to eq(204)
+
+      expect(Vendor.where(id: vendor.id)).to eq([])
+    end
+
+    it 'returns an error if vendor does not exist' do
+      delete "/api/v0/vendors/0"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
     end
   end
 end
