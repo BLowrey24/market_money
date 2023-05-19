@@ -1,5 +1,5 @@
 class MarketSearchFacade
-  def self.search_markets(name, state)
-    Market.where("name ILIKE ? AND state ILIKE ?", "%#{name}%", "%#{state}%")
+  def self.search_markets(name, state, city)
+    Market.where("name ILIKE ? AND state ILIKE ? AND city ILIKE ?", "%#{name}%", "%#{state}%", "%#{city}%")
   end
 end
