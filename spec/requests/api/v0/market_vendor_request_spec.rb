@@ -47,6 +47,8 @@ RSpec.describe 'MarketVendor requests' do
       
       expect(response).to_not be_successful
       expect(response.status).to eq(422)
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:errors][0][:detail]).to eq("Vendor already exists at this market.")
     end
   end
 
@@ -79,7 +81,7 @@ RSpec.describe 'MarketVendor requests' do
         expect(response.status).to eq(404)
 
         body = JSON.parse(response.body, symbolize_names: true)
-        expect(body[:errors][0][:detail]).to eq("Could not find MarketVendor with market_id of 0 OR vendor_id of 0.")
+        expect(body[:errors][0][:detail]).to eq("Could not find MarketVendor with market_id of '0' OR vendor_id of '0'.")
       end
     end
   end

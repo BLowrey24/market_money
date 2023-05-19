@@ -54,7 +54,7 @@ RSpec.describe 'Vendors requests' do
         body = JSON.parse(response.body, symbolize_names: true)
         error = body[:errors].first
         
-        expect(error[:detail]).to eq("Could not find Market with id of 1.")
+        expect(error[:detail]).to eq("Could not find Market with id of '1'.")
       end
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe 'Vendors requests' do
         body = JSON.parse(response.body, symbolize_names: true)
         error = body[:errors].first
 
-        expect(error[:detail]).to eq("Could not find Vendor with id of 10.")
+        expect(error[:detail]).to eq("Could not find Vendor with id of '10'.")
       end
     end
   end
@@ -153,10 +153,11 @@ RSpec.describe 'Vendors requests' do
         expect(response).to_not be_successful
         expect(response.status).to eq(400)
         body = JSON.parse(response.body, symbolize_names: true)
+        expect(body[:errors][:name][0]).to eq("can't be blank")
       end
     end
   end
-
+  
   describe 'patch /api/v0/vendors/#{vendor.id}' do
     describe 'update vendor happy path' do
       it 'can update a vendor' do
@@ -168,9 +169,9 @@ RSpec.describe 'Vendors requests' do
           contact_phone: '1231231250',
           credit_accepted: false
         }
-
+        
         patch "/api/v0/vendors/#{vendor.id}", params: { vendor: vendor_attributes }
-
+        
         expect(response).to be_successful
         expect(response.status).to eq(200)
         expect(Vendor.last.name).to eq(vendor_attributes[:name])
@@ -180,15 +181,18 @@ RSpec.describe 'Vendors requests' do
         expect(Vendor.last.credit_accepted).to eq(vendor_attributes[:credit_accepted])
       end
     end
-
+    
     describe 'update vendor sad path' do
       it 'returns an error if vendor does not exist' do
         patch "/api/v0/vendors/0"
-
+        
         expect(response).to_not be_successful
         expect(response.status).to eq(404)
-      end
 
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body[:errors][0][:detail]).to eq("Could not find Vendor with id of '0'.")
+      end
+      
       it 'returns an error if an attribute is missing' do
         vendor = create(:vendor)
         vendor_attributes = {
@@ -198,10 +202,10 @@ RSpec.describe 'Vendors requests' do
           contact_phone: '1231231250',
           credit_accepted: false
         }
-
+        
         patch "/api/v0/vendors/#{vendor.id}", params: { vendor: vendor_attributes }
         body = JSON.parse(response.body, symbolize_names: true)
-
+        
         expect(response).to_not be_successful
         expect(response.status).to eq(400)
         expect(body).to have_key(:errors)
@@ -209,27 +213,30 @@ RSpec.describe 'Vendors requests' do
       end
     end
   end
-
+  
   describe 'delete /api/v0/vendors/#{vendor_id}' do
     describe 'delete a vendor happy path' do
       it 'deletes a vendor' do
         vendor = create(:vendor)
-
+        
         delete "/api/v0/vendors/#{vendor.id}"
-
+        
         expect(response).to be_successful
         expect(response.status).to eq(204)
-
+        
         expect(Vendor.where(id: vendor.id)).to eq([])
       end
     end
-
+    
     describe 'delete a vendor sad path' do
       it 'returns an error if vendor does not exist' do
         delete "/api/v0/vendors/0"
-
+        
         expect(response).to_not be_successful
         expect(response.status).to eq(404)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body[:errors][0][:detail]).to eq("Could not find Vendor with id of '0'.")
       end
     end
   end

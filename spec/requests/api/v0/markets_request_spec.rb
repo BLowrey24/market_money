@@ -77,7 +77,7 @@ RSpec.describe 'Markets requests' do
 
       expect(body).to have_key(:errors)
 
-      expect(error_detail).to eq("Could not find market with id of 12345678910.")
+      expect(error_detail).to eq("Could not find market with id of '12345678910'.")
     end
   end
 end

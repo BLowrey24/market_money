@@ -16,6 +16,12 @@ class Api::V0::MarketVendorsController < ApplicationController
   end
 
   def destroy
-    
+    market_vendor = MarketVendor.find_by(market_id: params[:market_id], vendor_id: params[:vendor_id])
+    if market_vendor
+      market_vendor.destroy
+      render json:  {}, status: :no_content
+    else
+      render json: { errors: [{ detail: "Could not find MarketVendor with market_id of '#{params[:market_id]}' OR vendor_id of '#{params[:vendor_id]}'."}] }, status: :not_found
+    end
   end
 end
