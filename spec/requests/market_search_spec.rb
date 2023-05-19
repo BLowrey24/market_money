@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Markets search' do
+  before(:each) do
+    create_list(:market, 3)
+  end
   describe 'market search happy path' do
     it 'can search by name' do
-      create_list(:market, 3)
-
       get "/api/v0/markets/search", params: { name: "Market" }
-
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
@@ -17,8 +17,16 @@ RSpec.describe 'Markets search' do
       get "/api/v0/markets/search", params: { name: "#{Market.first.name}" }
 
       markets_2 = JSON.parse(response.body, symbolize_names: true)[:data]
-
       expect(markets_2.count).to eq(1)
+    end
+
+    it 'can search by state' do
+      get "/api/v0/markets/search", params: { state: "#{Market.first.state}" }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      market = JSON.parse(response.body, symbolize_names: true)[:data]
+      expect(market.count).to eq(1)
     end
   end
 end
