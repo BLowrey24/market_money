@@ -58,8 +58,17 @@ RSpec.describe 'Markets search' do
   end
 
   describe 'Market search sad path' do
-    it 'returns an error if disallowed params are passed - only city' do
+    it 'returns an error if params passed are only city' do
       get "/api/v0/markets/search", params: { city: "#{Market.first.city}" }
+      expect(response).to_not be_successful
+      expect(response.status).to eq(422)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:errors].first[:detail]).to eq("Invalid parameters.")
+    end
+
+    it 'returns an error if params are passed city and name' do
+      get "/api/v0/markets/search", params: { city: "#{Market.first.city}", name: "#{Market.first.name}" }
       expect(response).to_not be_successful
       expect(response.status).to eq(422)
 
