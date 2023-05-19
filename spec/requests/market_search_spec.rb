@@ -28,5 +28,14 @@ RSpec.describe 'Markets search' do
       market = JSON.parse(response.body, symbolize_names: true)[:data]
       expect(market.count).to eq(1)
     end
+
+    it 'can search by city' do
+      get "/api/v0/markets/search", params: { city: "#{Market.first.city}" }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      market = JSON.parse(response.body, symbolize_names: true)[:data]
+      expect(market.count).to eq(1)
+    end
   end
 end
