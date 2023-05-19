@@ -245,7 +245,8 @@
         "lines": [
           1,
           1,
-          null,
+          2,
+          2,
           null,
           null
         ]
@@ -255,8 +256,48 @@
           1,
           null
         ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/facades/market_search_facade.rb": {
+        "lines": [
+          1,
+          1,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/serializers/market_serializer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/models/market_vendor.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/Users/bostonlowrey/turing/3mod/projects/market_money/app/models/vendor.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null
+        ]
       }
     },
-    "timestamp": 1684460095
+    "timestamp": 1684462757
   }
 }
